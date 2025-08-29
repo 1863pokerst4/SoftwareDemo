@@ -137,7 +137,7 @@ def main_dashboard():
     # Load data
     if not st.session_state.data_loaded:
         with st.spinner("Loading data..."):
-                               data_dict = load_excel_data("Data.xlsx")
+            data_dict = load_excel_data(r"C:\Users\bushe\OneDrive\Orient Research\Mission Telecom\Data.xlsx")
             if data_dict:
                 st.session_state.data_dict = data_dict
                 st.session_state.data_loaded = True
