@@ -1,8 +1,3 @@
-# Virtual Environment
-venv/
-env/
-ENV/
-
 # Python
 __pycache__/
 *.py[cod]
@@ -25,23 +20,24 @@ wheels/
 .installed.cfg
 *.egg
 
-# Temporary files
-temp_data.xlsx
-*.tmp
-*.temp
+# Virtual Environment
+venv/
+env/
+ENV/
 
-# IDE files
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
 # Streamlit
 .streamlit/
 
-# Logs
-*.log
+# Data files (optional - you might want to include Data.xlsx)
+# *.xlsx
+# *.csv

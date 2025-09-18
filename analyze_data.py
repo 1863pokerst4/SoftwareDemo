@@ -47,4 +47,4 @@ def analyze_excel_file(file_path):
         print(f"Error reading Excel file: {e}")
 
 if __name__ == "__main__":
-    analyze_excel_file(r"C:\Users\bushe\OneDrive\Orient Research\Mission Telecom\Data.xlsx")
+    analyze_excel_file("Data.xlsx")

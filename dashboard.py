@@ -345,6 +345,426 @@ def public_housing_page():
     except Exception as e:
         st.error(f"Could not display data: {e}")
 
+def breakdown_990_page():
+    """990 Breakdown page"""
+    st.header("📊 990 Breakdown Analysis")
+    
+    try:
+        if 'data_dict' not in st.session_state:
+            st.error("Data not loaded. Please go to the main dashboard first.")
+            return
+        
+        df = st.session_state.data_dict.get('990Breakdown')
+        if df is None:
+            st.error("990 Breakdown data not found.")
+            return
+        
+        st.info(f"📊 Data loaded: {len(df)} records with {len(df.columns)} columns")
+        
+    except Exception as e:
+        st.error(f"Error loading 990 Breakdown data: {e}")
+        return
+    
+    # Key metrics
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        try:
+            total_orgs = len(df)
+            st.metric("Total Organizations", total_orgs)
+        except:
+            st.metric("Total Organizations", "Data Error")
+    
+    with col2:
+        try:
+            total_revenue = df['Total_Revenue'].sum()
+            st.metric("Total Revenue", f"${total_revenue:,.0f}")
+        except:
+            st.metric("Total Revenue", "Data Error")
+    
+    with col3:
+        try:
+            total_wifi = df['WiFi_Initiatives'].sum()
+            st.metric("WiFi Initiatives", f"${total_wifi:,.0f}")
+        except:
+            st.metric("WiFi Initiatives", "Data Error")
+    
+    with col4:
+        try:
+            avg_revenue = df['Total_Revenue'].mean()
+            st.metric("Avg Revenue per Org", f"${avg_revenue:,.0f}")
+        except:
+            st.metric("Avg Revenue per Org", "Data Error")
+    
+    st.markdown("---")
+    st.subheader("📋 Data Preview")
+    try:
+        st.dataframe(df.head(10), width='stretch')
+    except Exception as e:
+        st.error(f"Could not display data: {e}")
+
+def news_page():
+    """News page"""
+    st.header("📰 News & Updates")
+    
+    try:
+        if 'data_dict' not in st.session_state:
+            st.error("Data not loaded. Please go to the main dashboard first.")
+            return
+        
+        df = st.session_state.data_dict.get('NEWS')
+        if df is None:
+            st.error("News data not found.")
+            return
+        
+        st.info(f"📊 Data loaded: {len(df)} news items")
+        
+    except Exception as e:
+        st.error(f"Error loading News data: {e}")
+        return
+    
+    # Display news items
+    for idx, row in df.iterrows():
+        with st.expander(f"📰 {row['Headline']} - {row['Date'].strftime('%Y-%m-%d')}"):
+            st.write(row['Story'])
+
+def grants_gov_page():
+    """Grants.Gov page"""
+    st.header("🏛️ Grants.Gov Opportunities")
+    
+    try:
+        if 'data_dict' not in st.session_state:
+            st.error("Data not loaded. Please go to the main dashboard first.")
+            return
+        
+        df = st.session_state.data_dict.get('Grants.Gov')
+        if df is None:
+            st.error("Grants.Gov data not found.")
+            return
+        
+        st.info(f"📊 Data loaded: {len(df)} grant opportunities")
+        
+    except Exception as e:
+        st.error(f"Error loading Grants.Gov data: {e}")
+        return
+    
+    # Key metrics
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        try:
+            total_grants = len(df)
+            st.metric("Total Opportunities", total_grants)
+        except:
+            st.metric("Total Opportunities", "Data Error")
+    
+    with col2:
+        try:
+            total_amount = df['Amount'].sum()
+            st.metric("Total Amount Available", f"${total_amount:,.0f}")
+        except:
+            st.metric("Total Amount Available", "Data Error")
+    
+    with col3:
+        try:
+            avg_amount = df['Amount'].mean()
+            st.metric("Average Grant Size", f"${avg_amount:,.0f}")
+        except:
+            st.metric("Average Grant Size", "Data Error")
+    
+    st.markdown("---")
+    st.subheader("📋 Grant Opportunities")
+    try:
+        st.dataframe(df, width='stretch')
+    except Exception as e:
+        st.error(f"Could not display data: {e}")
+
+def lifeline_program_page():
+    """Lifeline Program page"""
+    st.header("📱 Lifeline Program Analysis")
+    
+    try:
+        if 'data_dict' not in st.session_state:
+            st.error("Data not loaded. Please go to the main dashboard first.")
+            return
+        
+        df = st.session_state.data_dict.get('Lifeline Program')
+        if df is None:
+            st.error("Lifeline Program data not found.")
+            return
+        
+        st.info(f"📊 Data loaded: {len(df)} program records")
+        
+    except Exception as e:
+        st.error(f"Error loading Lifeline Program data: {e}")
+        return
+    
+    # Key metrics
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        try:
+            total_orgs = len(df)
+            st.metric("Total Organizations", total_orgs)
+        except:
+            st.metric("Total Organizations", "Data Error")
+    
+    with col2:
+        try:
+            total_households = df['Households_Served'].sum()
+            st.metric("Total Households Served", f"{total_households:,}")
+        except:
+            st.metric("Total Households Served", "Data Error")
+    
+    with col3:
+        try:
+            total_subsidies = df['Lifeline_Subsidies_Granted'].sum()
+            st.metric("Total Subsidies Granted", f"${total_subsidies:,.0f}")
+        except:
+            st.metric("Total Subsidies Granted", "Data Error")
+    
+    with col4:
+        try:
+            unique_states = df['State'].nunique()
+            st.metric("States Covered", unique_states)
+        except:
+            st.metric("States Covered", "Data Error")
+    
+    st.markdown("---")
+    st.subheader("📋 Program Data")
+    try:
+        st.dataframe(df, width='stretch')
+    except Exception as e:
+        st.error(f"Could not display data: {e}")
+
+def erate_page():
+    """E-Rate page"""
+    st.header("📚 E-Rate Program Analysis")
+    
+    try:
+        if 'data_dict' not in st.session_state:
+            st.error("Data not loaded. Please go to the main dashboard first.")
+            return
+        
+        df = st.session_state.data_dict.get('E-Rate')
+        if df is None:
+            st.error("E-Rate data not found.")
+            return
+        
+        st.info(f"📊 Data loaded: {len(df)} E-Rate records")
+        
+    except Exception as e:
+        st.error(f"Error loading E-Rate data: {e}")
+        return
+    
+    # Key metrics
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        try:
+            total_recipients = len(df)
+            st.metric("Total Recipients", total_recipients)
+        except:
+            st.metric("Total Recipients", "Data Error")
+    
+    with col2:
+        try:
+            total_cat1 = df['Category1_Funding'].sum()
+            st.metric("Total Category 1 Funding", f"${total_cat1:,.0f}")
+        except:
+            st.metric("Total Category 1 Funding", "Data Error")
+    
+    with col3:
+        try:
+            total_cat2 = df['Category2_Funding'].sum()
+            st.metric("Total Category 2 Funding", f"${total_cat2:,.0f}")
+        except:
+            st.metric("Total Category 2 Funding", "Data Error")
+    
+    with col4:
+        try:
+            unique_states = df['State'].nunique()
+            st.metric("States Covered", unique_states)
+        except:
+            st.metric("States Covered", "Data Error")
+    
+    st.markdown("---")
+    st.subheader("📋 E-Rate Data")
+    try:
+        st.dataframe(df.head(20), width='stretch')
+    except Exception as e:
+        st.error(f"Could not display data: {e}")
+
+def ftia_funding_page():
+    """FTIA Funding Report page"""
+    st.header("🏛️ FTIA Funding Report")
+    
+    try:
+        if 'data_dict' not in st.session_state:
+            st.error("Data not loaded. Please go to the main dashboard first.")
+            return
+        
+        df = st.session_state.data_dict.get('FTIA Funding Report')
+        if df is None:
+            st.error("FTIA Funding Report data not found.")
+            return
+        
+        st.info(f"📊 Data loaded: {len(df)} tribal funding records")
+        
+    except Exception as e:
+        st.error(f"Error loading FTIA Funding Report data: {e}")
+        return
+    
+    # Key metrics
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        try:
+            total_tribes = len(df)
+            st.metric("Total Tribes", total_tribes)
+        except:
+            st.metric("Total Tribes", "Data Error")
+    
+    with col2:
+        try:
+            unique_agencies = df['Agency'].nunique()
+            st.metric("Funding Agencies", unique_agencies)
+        except:
+            st.metric("Funding Agencies", "Data Error")
+    
+    with col3:
+        try:
+            unique_states = df['Which State'].nunique()
+            st.metric("States Covered", unique_states)
+        except:
+            st.metric("States Covered", "Data Error")
+    
+    with col4:
+        try:
+            recent_year = df['Fiscal Year'].max()
+            st.metric("Most Recent Year", recent_year)
+        except:
+            st.metric("Most Recent Year", "Data Error")
+    
+    st.markdown("---")
+    st.subheader("📋 Tribal Funding Data")
+    try:
+        st.dataframe(df.head(20), width='stretch')
+    except Exception as e:
+        st.error(f"Could not display data: {e}")
+
+def tp_cap_fund_page():
+    """TP Cap Fund page"""
+    st.header("💰 TP Cap Fund Analysis")
+    
+    try:
+        if 'data_dict' not in st.session_state:
+            st.error("Data not loaded. Please go to the main dashboard first.")
+            return
+        
+        df = st.session_state.data_dict.get('TP Cap Fund')
+        if df is None:
+            st.error("TP Cap Fund data not found.")
+            return
+        
+        st.info(f"📊 Data loaded: {len(df)} state/territory allocations")
+        
+    except Exception as e:
+        st.error(f"Error loading TP Cap Fund data: {e}")
+        return
+    
+    # Key metrics
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        try:
+            total_states = len(df)
+            st.metric("States/Territories", total_states)
+        except:
+            st.metric("States/Territories", "Data Error")
+    
+    with col2:
+        try:
+            # Clean and sum the allocation amounts
+            amounts = df['Total CPF Allocation'].astype(str).str.replace('$', '').str.replace(',', '')
+            amounts = pd.to_numeric(amounts, errors='coerce')
+            total_allocation = amounts.sum()
+            st.metric("Total CPF Allocation", f"${total_allocation:,.0f}")
+        except:
+            st.metric("Total CPF Allocation", "Data Error")
+    
+    with col3:
+        try:
+            avg_allocation = amounts.mean()
+            st.metric("Average Allocation", f"${avg_allocation:,.0f}")
+        except:
+            st.metric("Average Allocation", "Data Error")
+    
+    st.markdown("---")
+    st.subheader("📋 CPF Allocations by State/Territory")
+    try:
+        st.dataframe(df, width='stretch')
+    except Exception as e:
+        st.error(f"Could not display data: {e}")
+
+def marketing_page():
+    """Marketing page"""
+    st.header("📢 Marketing & Sponsorship Analysis")
+    
+    try:
+        if 'data_dict' not in st.session_state:
+            st.error("Data not loaded. Please go to the main dashboard first.")
+            return
+        
+        df = st.session_state.data_dict.get('Marketing')
+        if df is None:
+            st.error("Marketing data not found.")
+            return
+        
+        st.info(f"📊 Data loaded: {len(df)} marketing outlets")
+        
+    except Exception as e:
+        st.error(f"Error loading Marketing data: {e}")
+        return
+    
+    # Key metrics
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        try:
+            total_outlets = len(df)
+            st.metric("Total Outlets", total_outlets)
+        except:
+            st.metric("Total Outlets", "Data Error")
+    
+    with col2:
+        try:
+            total_reach = df['Audience_Reach'].sum()
+            st.metric("Total Audience Reach", f"{total_reach:,}")
+        except:
+            st.metric("Total Audience Reach", "Data Error")
+    
+    with col3:
+        try:
+            total_cost = df['Annual_Sponsorship_Cost'].sum()
+            st.metric("Total Annual Cost", f"${total_cost:,.0f}")
+        except:
+            st.metric("Total Annual Cost", "Data Error")
+    
+    with col4:
+        try:
+            avg_cost = df['Annual_Sponsorship_Cost'].mean()
+            st.metric("Average Cost per Outlet", f"${avg_cost:,.0f}")
+        except:
+            st.metric("Average Cost per Outlet", "Data Error")
+    
+    st.markdown("---")
+    st.subheader("📋 Marketing Outlets")
+    try:
+        st.dataframe(df, width='stretch')
+    except Exception as e:
+        st.error(f"Could not display data: {e}")
+
 # Sidebar navigation
 st.sidebar.title("Navigation")
 page = st.sidebar.selectbox(
@@ -352,7 +772,15 @@ page = st.sidebar.selectbox(
     [
         "Main Dashboard",
         "Emergency Connectivity Fund", 
-        "Public Housing Funding"
+        "Public Housing Funding",
+        "990 Breakdown",
+        "News",
+        "Grants.Gov",
+        "Lifeline Program",
+        "E-Rate",
+        "FTIA Funding Report",
+        "TP Cap Fund",
+        "Marketing"
     ]
 )
 
@@ -363,3 +791,19 @@ elif page == "Emergency Connectivity Fund":
     emergency_connectivity_page()
 elif page == "Public Housing Funding":
     public_housing_page()
+elif page == "990 Breakdown":
+    breakdown_990_page()
+elif page == "News":
+    news_page()
+elif page == "Grants.Gov":
+    grants_gov_page()
+elif page == "Lifeline Program":
+    lifeline_program_page()
+elif page == "E-Rate":
+    erate_page()
+elif page == "FTIA Funding Report":
+    ftia_funding_page()
+elif page == "TP Cap Fund":
+    tp_cap_fund_page()
+elif page == "Marketing":
+    marketing_page()
